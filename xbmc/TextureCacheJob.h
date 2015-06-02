@@ -70,11 +70,6 @@ public:
   virtual bool operator==(const CJob *job) const;
   virtual bool DoWork();
 
-  /*! \brief retrieve a hash for the given image
-   Combines the size, ctime and mtime of the image file into a "unique" hash
-   \param url location of the image
-   \return a hash string for this image
-   */
   bool CacheTexture(CBaseTexture **texture = NULL);
 
   static bool ResizeTexture(const std::string &url, uint8_t* &result, size_t &result_size);
