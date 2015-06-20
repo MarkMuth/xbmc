@@ -79,6 +79,13 @@ echo "## MAKECLEAN = $MAKECLEAN"
 echo "## WORKSPACE = $WORKSPACE"
 echo "################################"
 
+echo "##### building libx264 dll #####"
+cd /xbmc/project/Win32BuildSetup
+runBackgroundProcess "./buildlibx264.sh $MAKECLEAN"
+setfilepath /xbmc/system/players/dvdplayer
+checkfiles libx264-142.dll
+echo "##### building of libx264 dll done #####"
+
 echo "##### building ffmpeg dlls #####"
 cd /xbmc/project/Win32BuildSetup
 runBackgroundProcess "./buildffmpeg.sh $MAKECLEAN"
