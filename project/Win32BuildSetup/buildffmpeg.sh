@@ -75,6 +75,7 @@ OPTIONS="
 --enable-muxer=adts \
 --enable-muxer=asf \
 --enable-muxer=ipod \
+--enable-muxer=mp4 \
 --enable-muxer=ogg \
 --enable-encoder=ac3 \
 --enable-encoder=aac \
