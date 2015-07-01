@@ -446,7 +446,7 @@ static int open_output_file(const char *filename)
 	AVCodecContext *dec_ctx, *enc_ctx;
 	AVCodec *encoder;
 
-	AVDictionary *dict;
+	AVDictionary *dict = NULL;
 	int ret;
 	unsigned int i;
 
@@ -457,6 +457,13 @@ static int open_output_file(const char *filename)
 		return AVERROR_UNKNOWN;
 	}
 
+	AVOutputFormat* fmt = av_guess_format(0, filename, 0);
+	if (!fmt) {
+		av_log(NULL, AV_LOG_ERROR, "Could not guess format\n");
+		return AVERROR_UNKNOWN;
+	}
+	
+	ofmt_ctx->oformat = fmt;
 
 	for (i = 0; i < ifmt_ctx->nb_streams; i++) {
 		out_stream = avformat_new_stream(ofmt_ctx, NULL);
@@ -487,7 +494,7 @@ static int open_output_file(const char *filename)
 			* streams easily using filters */
 
 			if (dec_ctx->codec_type == AVMEDIA_TYPE_VIDEO) {
-				av_free(dict); dict = NULL;
+				if (dict) { av_free(dict); dict = NULL; }
 				av_dict_set(&dict, "preset", "slow", 0);
 				av_dict_set(&dict, "vprofile", "baseline", 0);
 				av_opt_set(enc_ctx->priv_data, "profile", "baseline", AV_OPT_SEARCH_CHILDREN);
@@ -499,6 +506,8 @@ static int open_output_file(const char *filename)
 				/* take first format from list of supported formats */
 				enc_ctx->pix_fmt = encoder->pix_fmts[0];
 				/* video time_base can be set to whatever is handy and supported by encoder */
+				//AVRational enc_time_base = dec_ctx->time_base;
+				//enc_time_base.den /= 2;
 				enc_ctx->time_base = dec_ctx->time_base;
 				/* Dirty hack*/
 				//AVRational r = { 1, 24 };
@@ -528,7 +537,7 @@ static int open_output_file(const char *filename)
 				//c->flags2 |= CODEC_FLAG2_FASTPSKIP;
 			}
 			else {
-				av_free(dict); dict = NULL;
+				if (dict) { av_free(dict); dict = NULL; }
 				enc_ctx->sample_rate = dec_ctx->sample_rate;
 				enc_ctx->channel_layout = dec_ctx->channel_layout;
 				enc_ctx->channels = av_get_channel_layout_nb_channels(enc_ctx->channel_layout);
@@ -576,7 +585,7 @@ static int open_output_file(const char *filename)
 	}
 
 	/* init muxer, write output file header */
-	av_free(dict); dict = NULL;
+	if (dict) { av_free(dict); dict = NULL; }
 	av_dict_set(&dict, "movflags", "faststart", 0);
 	ret = avformat_write_header(ofmt_ctx, &dict);
 	if (ret < 0) {
@@ -929,7 +938,7 @@ int transcoding(int argc, char **argv)
 			}
 
 			if (got_frame) {
-				//frame->pts = av_frame_get_best_effort_timestamp(frame);
+				frame->pts = av_frame_get_best_effort_timestamp(frame);
 				ret = filter_encode_write_frame(frame, stream_index);
 				av_frame_free(&frame);
 				if (ret < 0)
