@@ -87,11 +87,7 @@ double FFmpegVideoDecoder::getDuration() const
   
 double FFmpegVideoDecoder::getFramesPerSecond() const
 {
-#if defined(AVFORMAT_HAS_STREAM_GET_R_FRAME_RATE)
   return m_pFormatCtx ? av_q2d( av_stream_get_r_frame_rate( m_pFormatCtx->streams[ m_videoStream ] ) ) : 0.0;
-#else
-  return m_pFormatCtx ? av_q2d( m_pFormatCtx->streams[ m_videoStream ]->r_frame_rate ) : 0.0;
-#endif
 }
   
 unsigned int FFmpegVideoDecoder::getWidth() const
@@ -134,7 +130,6 @@ double FFmpegVideoDecoder::getLastFrameTime() const
 {
   return m_lastFrameTime;
 }
-
 
 bool FFmpegVideoDecoder::open( const std::string& filename )
 {
@@ -210,7 +205,6 @@ bool FFmpegVideoDecoder::open( const std::string& filename )
   return true;
 }
 
-
 bool FFmpegVideoDecoder::seek( double time )
 {
   // Convert the frame number into time stamp
@@ -270,11 +264,11 @@ bool FFmpegVideoDecoder::nextFrame( CBaseTexture * texture )
       if ( frameFinished )
       {
         if ( packet.dts != (int64_t)AV_NOPTS_VALUE )
-	  m_lastFrameTime = packet.dts * av_q2d( m_pFormatCtx->streams[ m_videoStream ]->time_base );
+          m_lastFrameTime = packet.dts * av_q2d( m_pFormatCtx->streams[ m_videoStream ]->time_base );
         else
-	   m_lastFrameTime = 0.0;
+          m_lastFrameTime = 0.0;
 
-	break;
+        break;
       }
     }
 
@@ -295,4 +289,3 @@ bool FFmpegVideoDecoder::nextFrame( CBaseTexture * texture )
 
   return true;
 }
-
