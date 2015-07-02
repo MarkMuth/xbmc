@@ -2336,5 +2336,15 @@
       { "name": "setting", "type": "string", "required": true, "minLength": 1 }
     ],
     "returns": "string"
+  },
+  "Transcoder.Transcode": {
+    "type": "method",
+    "description": "Transcode a specific media item. At the moment only movies from the library are supported",
+    "transport": "Response",
+    "permission": "WriteFile",
+    "params": [
+      { "name": "movieid", "$ref": "Library.Id", "required": true }
+    ],
+    "returns": "string"
   }
 }
