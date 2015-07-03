@@ -340,6 +340,9 @@
     <Filter Include="contrib\kissfft">
       <UniqueIdentifier>{d811b1d1-5e81-4d89-9173-f02818c897ab}</UniqueIdentifier>
     </Filter>
+    <Filter Include="cores\Transcoder">
+      <UniqueIdentifier>{654f1b50-e012-4141-ae01-81bdd7a9529f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\xbmc\win32\pch.cpp">
@@ -3101,6 +3104,9 @@
     </ClCompile>
     <ClCompile Include="..\..\xbmc\interfaces\json-rpc\TranscoderOperations.cpp">
       <Filter>interfaces\json-rpc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\xbmc\cores\Transcoder\Transcoder.cpp">
+      <Filter>cores\Transcoder</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -5997,6 +6003,9 @@
     </ClInclude>
     <ClInclude Include="..\..\xbmc\interfaces\json-rpc\TranscoderOperations.h">
       <Filter>interfaces\json-rpc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\xbmc\cores\Transcoder\Transcoder.h">
+      <Filter>cores\Transcoder</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

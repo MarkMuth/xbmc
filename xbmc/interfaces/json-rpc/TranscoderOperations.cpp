@@ -21,6 +21,7 @@
 #include "TranscoderOperations.h"
 #include "VideoLibrary.h"
 #include "utils/log.h"
+#include "cores/Transcoder/Transcoder.h"
 
 using namespace JSONRPC;
 
@@ -36,7 +37,10 @@ JSONRPC_STATUS CTranscoderOperations::Transcode(const std::string &method, ITran
     std::string moviename = list[0]->GetMovieName();
     std::string moviepath = list[0]->GetPath();
     CLog::Log(LOGDEBUG, "JSONRPC: Found requested movie '%s' with id '%d' in library. Path: %s"
-      , moviename.c_str(), (int) movieid.asInteger, moviepath.c_str());
+      , moviename.c_str(), (int) movieid.asInteger(), moviepath.c_str());
+
+    CTranscoder transcoder;
+    transcoder.Transcode(moviepath);
   }
 
   CLog::Log(LOGDEBUG, "JSONRPC: Request for transcoding received but not implemented yet.");
