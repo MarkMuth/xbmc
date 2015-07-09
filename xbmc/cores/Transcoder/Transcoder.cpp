@@ -524,7 +524,7 @@ int CTranscoder::Transcode(std::string path)
 	}
 
 
-  std::string pathOut = path.substr(0, path.find_last_of('.')) + std::string("-transcoded.mp4");
+  std::string pathOut = TranscodePath(path);
 	printf("Using input file %s and output file %s", path.c_str(), pathOut.c_str());
 
 	av_register_all();
@@ -632,4 +632,9 @@ end:
 	}
 
 	return ret ? 1 : 0;
+}
+
+std::string CTranscoder::TranscodePath(const std::string &path) const
+{
+  return path.substr(0, path.find_last_of('.')) + std::string("-transcoded.mp4");
 }

@@ -21,6 +21,7 @@ public:
   virtual ~CTranscoder() {};
 
   int Transcode(std::string path);
+  std::string TranscodePath(const std::string &path) const;
 
 private:
 
